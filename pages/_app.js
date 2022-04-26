@@ -1,9 +1,9 @@
 import Head from "next/head";
 import "/resources/styles/globals.css";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import MainLayout from "../components/Layout";
 import { createContext, useEffect, useState } from "react";
-import { web3 } from "../utils/web3";
+import { web3, provider, saveWalletInfo } from "../utils/web3";
 import ErrorBoundary from "../components/ErrorBoundary";
 import LogIn from "/components/Templates/SignIn";
 
@@ -32,6 +32,15 @@ const MyApp = ({ Component, pageProps }) => {
 
   useEffect(() => {
     fetch();
+
+    const handleChainChange = async (chainId) => {
+      console.log(chainId, "chain changed!")
+      await saveWalletInfo(setUserInfo, toast);
+      chainId !== "0x4" && window.location.reload();
+    }
+    
+    provider.on("chainChanged", handleChainChange);
+    return () => provider.removeListener('chainChanged', handleChainChange);
   }, [userInfo]);
 
   const Layout = Component.layout ?? MainLayout;

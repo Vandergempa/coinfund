@@ -21,10 +21,11 @@ const Header = () => {
 
   useEffect(() => {
     userInfo && userInfo.connectionId && setProfileImg(Mosaic);
+    !userInfo || (userInfo && !userInfo.account) && setProfileImg(Metamask);
   }, [userInfo]);
 
   const renderConnectDiv = (isMobile = false) => {
-    return !userInfo ? (
+    return !userInfo || (userInfo && !userInfo.account) ? (
       <div
         className={classNames(
           isMobile ? "m-5" : "",

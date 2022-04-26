@@ -29,6 +29,7 @@ const web3 = new Web3(provider);
  * @returns {Promise<void>}
  */
 const handleWalletConnect = async (setUserInfo, toast) => {
+  let isChanged = false;
   try {
     if (provider) {
       if (
@@ -52,16 +53,13 @@ const handleWalletConnect = async (setUserInfo, toast) => {
 
       // Make sure to recognize if someone changes their metamask account
       provider.on("accountsChanged", async (accounts) => {
-        await provider.request({ method: "eth_requestAccounts" });
+        console.log(accounts, "accountsChanged!")
+
         await saveWalletInfo(setUserInfo, toast);
-        accounts.length === 0 && window.location.reload();
+        isChanged = true;
       });
 
-      provider.on("chainChanged", async (chainId) => {
-        await saveWalletInfo(setUserInfo, toast);
-      });
-
-      await saveWalletInfo(setUserInfo, toast);
+      !isChanged && await saveWalletInfo(setUserInfo, toast);
     }
   } catch (err) {
     toast.error(
@@ -81,13 +79,14 @@ const saveWalletInfo = async (setUserInfo, toast) => {
     const userAccount = await web3.eth.getAccounts();
     if (userAccount.length === 0) {
       toast.error("Please connect your metamask wallet!");
-      return;
     }
 
     const chainId = await web3.eth.getChainId();
     const account = userAccount[0];
     let ethBalance = account && (await web3.eth.getBalance(account));
-    ethBalance = web3.utils.fromWei(ethBalance, "ether");
+    if (ethBalance) {
+      ethBalance = web3.utils.fromWei(`${ethBalance}`, "ether");
+    }
 
     setUserInfo({
       connectionId: chainId,

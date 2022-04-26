@@ -27,3 +27,5 @@ ethereum/.env
 
 # vercel
 .vercel
+
+package-lock.json
