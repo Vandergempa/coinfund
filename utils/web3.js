@@ -20,7 +20,8 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   provider = new Web3.providers.HttpProvider(process.env.FACTORY_PROVIDER);
 }
 
-const web3 = new Web3(provider);
+const web3 = new Web3();
+web3.setProvider(provider);
 
 /**
  * Handles connecting to a Metamask wallet
@@ -29,7 +30,6 @@ const web3 = new Web3(provider);
  * @returns {Promise<void>}
  */
 const handleWalletConnect = async (setUserInfo, toast) => {
-  let isChanged = false;
   try {
     if (provider) {
       if (
@@ -50,16 +50,7 @@ const handleWalletConnect = async (setUserInfo, toast) => {
       }
 
       await provider.request({ method: "eth_requestAccounts" });
-
-      // Make sure to recognize if someone changes their metamask account
-      provider.on("accountsChanged", async (accounts) => {
-        console.log(accounts, "accountsChanged!")
-
-        await saveWalletInfo(setUserInfo, toast);
-        isChanged = true;
-      });
-
-      !isChanged && await saveWalletInfo(setUserInfo, toast);
+      await saveWalletInfo(setUserInfo, toast);
     }
   } catch (err) {
     toast.error(

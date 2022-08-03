@@ -11,6 +11,7 @@ export const Web3Context = createContext([{}, () => {}]);
 
 const MyApp = ({ Component, pageProps }) => {
   const [userInfo, setUserInfo] = useState();
+  const [isProvider, setIsProvider] = useState(true);
   const [network, setNetwork] = useState("");
 
   /**
@@ -21,7 +22,6 @@ const MyApp = ({ Component, pageProps }) => {
   const fetch = async () => {
     const network = await web3.eth.net.getNetworkType();
     setNetwork(network);
-
     if (network !== "rinkeby") {
       await window.ethereum.request({
         method: "wallet_switchEthereumChain",
@@ -30,23 +30,41 @@ const MyApp = ({ Component, pageProps }) => {
     }
   };
 
+  const handleChainChange = async (chainId) => {
+    await saveWalletInfo(setUserInfo, toast);
+    chainId !== "0x4" && window.location.reload();
+    toast.success("Main chain changed!");
+  };
+
+  const handleAccountsChange = async (accounts) => {
+    await saveWalletInfo(setUserInfo, toast);
+    toast.success("Account change detected!");
+  };
+
   useEffect(() => {
     fetch();
-
-    const handleChainChange = async (chainId) => {
-      console.log(chainId, "chain changed!")
-      await saveWalletInfo(setUserInfo, toast);
-      chainId !== "0x4" && window.location.reload();
-    }
-    
-    provider.on("chainChanged", handleChainChange);
-    return () => provider.removeListener('chainChanged', handleChainChange);
   }, [userInfo]);
+
+  useEffect(() => {
+    if (!provider || !provider.isMetaMask) {
+      setIsProvider(false);
+      toast.error("You need to install Metamask first!");
+      return;
+    }
+
+    // Make sure to recognize if someone changes their metamask account and the mainnet
+    provider.on("accountsChanged", handleAccountsChange);
+    provider.on("chainChanged", handleChainChange);
+    return () => [
+      provider.removeListener("chainChanged", handleChainChange),
+      provider.removeListener("accountsChanged", handleAccountsChange),
+    ];
+  }, [provider]);
 
   const Layout = Component.layout ?? MainLayout;
 
   return (
-    <Web3Context.Provider value={[userInfo, setUserInfo, network]}>
+    <Web3Context.Provider value={[userInfo, setUserInfo, network, isProvider]}>
       <Head>
         <title>Coinfund</title>
       </Head>
@@ -56,7 +74,7 @@ const MyApp = ({ Component, pageProps }) => {
             <Component {...pageProps} />
           ) : (
             <>
-              <LogIn />
+              <LogIn isProvider={isProvider} />
             </>
           )}
         </ErrorBoundary>

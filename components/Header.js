@@ -16,12 +16,12 @@ import { handleWalletConnect } from "../utils/web3";
  * @constructor
  */
 const Header = () => {
-  const [userInfo, setUserInfo, network] = useContext(Web3Context);
+  const [userInfo, setUserInfo, network, isProvider] = useContext(Web3Context);
   const [profileImg, setProfileImg] = useState(Metamask);
 
   useEffect(() => {
     userInfo && userInfo.connectionId && setProfileImg(Mosaic);
-    !userInfo || (userInfo && !userInfo.account) && setProfileImg(Metamask);
+    !userInfo || (userInfo && !userInfo.account && setProfileImg(Metamask));
   }, [userInfo]);
 
   const renderConnectDiv = (isMobile = false) => {
@@ -139,14 +139,16 @@ const Header = () => {
                         )}
                       </Disclosure.Button>
                     </div>
-                    <div className="hidden lg:block lg:ml-4">
-                      {renderConnectDiv(false)}
-                    </div>
+                    {isProvider && (
+                      <div className="hidden lg:block lg:ml-4">
+                        {renderConnectDiv(false)}
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 <Disclosure.Panel className="lg:hidden">
-                  {renderConnectDiv(true)}
+                  {isProvider && renderConnectDiv(true)}
                 </Disclosure.Panel>
               </>
             )}

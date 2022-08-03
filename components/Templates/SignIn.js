@@ -11,35 +11,46 @@ import { Web3Context } from "../../pages/_app";
  * @constructor
  */
 const Login = () => {
-  const [_userInfo, setUserInfo] = useContext(Web3Context);
+  const [_userInfo, setUserInfo, isProvider] = useContext(Web3Context);
 
   return (
     <div className="min-h-screen flex p-10">
-      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+      <div className="flex-1 flex flex-col justify-center mb-36 py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
-          <div>
-            <img
-              className="h-12 w-auto"
-              src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-              alt="Workflow"
-            />
-            <h2 className="mt-6 text-2xl font-extrabold text-gray-900">
-              Connect to your Metamask wallet
-            </h2>
-          </div>
+          {isProvider && (
+            <>
+              <div className="flex flex-row items-center">
+                <img
+                  className="h-12 w-auto"
+                  src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                  alt="app-logo"
+                />
+                <h2 className="ml-2 text-2xl font-extrabold text-indigo-600">
+                  Coinfund
+                </h2>
+              </div>
 
-          <div className="mt-4 mb-6">
-            <button
-              type="button"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              onClick={() => handleWalletConnect(setUserInfo, toast)}
-            >
-              Connect Wallet
-            </button>
-          </div>
+              <div className="mt-4 mb-6">
+                <button
+                  type="button"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed"
+                  onClick={() => handleWalletConnect(setUserInfo, toast)}
+                  disabled={!isProvider}
+                >
+                  Connect Wallet
+                </button>
+              </div>
+            </>
+          )}
           <WalletAlert
-            title="Connect wallet first!"
-            subtitle="Please make sure to connect your Ethereum compatible wallet AND select the Rinkeby test network before continuing!"
+            title={
+              isProvider ? "Connect wallet first!" : "Install Metamask first!"
+            }
+            subtitle={
+              isProvider
+                ? "Please make sure to connect your Ethereum compatible wallet AND select the Rinkeby test network before continuing!"
+                : "Please make sure to open Metamask before proceeding!"
+            }
           />
         </div>
       </div>

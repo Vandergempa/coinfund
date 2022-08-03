@@ -16,7 +16,8 @@ const Page500 = () => {
                   Oooops, something went wrong...
                 </h1>
                 <p className="mt-3 text-base text-gray-500">
-                  Make sure your wallet is connected and the correct network is selected
+                  Please make sure that Metamask is installed, connected and the
+                  correct network is selected
                 </p>
               </div>
               <div className="mt-10 flex space-x-3 sm:border-l sm:border-transparent sm:pl-6">
