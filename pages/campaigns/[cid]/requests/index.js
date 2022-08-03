@@ -163,10 +163,17 @@ const RequestsList = (props) => {
  * @param context
  * @returns {Promise<{requestCount: int, contributorCount: int, requests: Request[]}>}
  */
-RequestsList.getStaticProps = async (context) => {
-  const campaign = getCampaignInstance(context.query.cid);
-  const requestCount = await campaign.methods.numRequests().call();
-  const contributorCount = await campaign.methods.contributorCount().call();
+export const getServerSideProps = async (context) => {
+  let campaign;
+  let requestCount;
+  let contributorCount;
+  try {
+    campaign = getCampaignInstance(context.query.cid);
+    requestCount = await campaign.methods.numRequests().call();
+    contributorCount = await campaign.methods.contributorCount().call();
+  } catch {
+    console.log("UFF, error 1");
+  }
 
   const requests = await Promise.all(
     Array(parseInt(requestCount))
@@ -176,7 +183,7 @@ RequestsList.getStaticProps = async (context) => {
       })
   );
 
-  return { requests, requestCount, contributorCount };
+  return { props: { requests, requestCount, contributorCount } };
 };
 
 export default RequestsList;

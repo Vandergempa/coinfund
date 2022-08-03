@@ -10,7 +10,10 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
 
   // We are in the browser and metamask is running.
   provider = window.ethereum;
-} else if (typeof window !== "undefined" && window.web3) {
+} else if (
+  typeof window !== "undefined" &&
+  typeof window.web3 !== "undefined"
+) {
   console.log("web3 prov");
 
   provider = window.web3.currentProvider;

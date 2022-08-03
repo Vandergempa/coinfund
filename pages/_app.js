@@ -64,25 +64,23 @@ const MyApp = ({ Component, pageProps }) => {
   const Layout = Component.layout ?? MainLayout;
 
   return (
-    <ErrorBoundary FallbackComponent={<p>Something went wrong!</p>}>
-      <Web3Context.Provider
-        value={[userInfo, setUserInfo, network, isProvider]}
-      >
-        <Head>
-          <title>Coinfund</title>
-        </Head>
-        <Layout>
-          {network === "rinkeby" && userInfo && userInfo.account ? (
-            <Component {...pageProps} />
-          ) : (
-            <>
-              <LogIn isProvider={isProvider} />
-            </>
-          )}
-        </Layout>
-        <Toaster position="bottom-right" />
-      </Web3Context.Provider>
-    </ErrorBoundary>
+    <Web3Context.Provider value={[userInfo, setUserInfo, network, isProvider]}>
+      <Head>
+        <title>Coinfund</title>
+      </Head>
+      <Layout>
+        {network === "rinkeby" && userInfo && userInfo.account ? (
+          <ErrorBoundary FallbackComponent={<p>Something went wrong!</p>}>
+            <Component {...pageProps} />{" "}
+          </ErrorBoundary>
+        ) : (
+          <>
+            <LogIn isProvider={isProvider} />
+          </>
+        )}
+      </Layout>
+      <Toaster position="bottom-right" />
+    </Web3Context.Provider>
   );
 };
 

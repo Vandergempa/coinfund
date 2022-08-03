@@ -101,22 +101,30 @@ const CampaignIndex = (props) => {
  * Fetches a list of deployed campaigns and their description from the blockchain on the server before render
  * @returns {Promise<{campaignDescriptions: string[], campaigns: string[]}>}
  */
-CampaignIndex.getStaticProps = async () => {
-  const campaigns = await getFactoryInstance()
-    .methods.getDeployedCampaigns()
-    .call();
+export const getServerSideProps = async (context) => {
+  let campaigns;
+  let campaignDescriptions;
+  try {
+    campaigns = await getFactoryInstance()
+      .methods.getDeployedCampaigns()
+      .call();
 
-  const campaignDescriptions = await Promise.all(
-    campaigns.map(async (address) => {
-      return await getCampaignInstance(address)
-        .methods.campaignDescription()
-        .call();
-    })
-  );
+    campaignDescriptions = await Promise.all(
+      campaigns.map(async (address) => {
+        return await getCampaignInstance(address)
+          .methods.campaignDescription()
+          .call();
+      })
+    );
+  } catch {
+    console.log("AAAND LAst error 3");
+  }
 
   return {
-    campaigns,
-    campaignDescriptions,
+    props: {
+      campaigns,
+      campaignDescriptions,
+    },
   };
 };
 

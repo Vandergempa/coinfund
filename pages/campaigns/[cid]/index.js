@@ -148,17 +148,25 @@ const CampaignDetails = (props) => {
  * @param context
  * @returns {Promise<{contractBalance, requestCount, managerAddress, contributorCount, description, minimumContribution}>}
  */
-CampaignDetails.getStaticProps = async (context) => {
-  const campaign = getCampaignInstance(context.query.cid);
-  const summary = await campaign.methods.getSummary().call();
+export const getServerSideProps = async (context) => {
+  let campaign;
+  let summary;
+  try {
+    campaign = getCampaignInstance(context.query.cid);
+    summary = await campaign.methods.getSummary().call();
+  } catch {
+    console.log("Another error 2");
+  }
 
   return {
-    minimumContribution: summary[0],
-    contractBalance: summary[1],
-    requestCount: summary[2],
-    contributorCount: summary[3],
-    managerAddress: summary[4],
-    description: summary[5],
+    props: {
+      minimumContribution: summary[0],
+      contractBalance: summary[1],
+      requestCount: summary[2],
+      contributorCount: summary[3],
+      managerAddress: summary[4],
+      description: summary[5],
+    },
   };
 };
 
