@@ -37,7 +37,6 @@ const Login = () => {
                   ? handleWalletConnect(setUserInfo, toast)
                   : window.location.replace("https://metamask.io/")
               }
-              disabled={!isProvider}
             >
               {isProvider ? "Connect Wallet" : "Install Metamask"}
             </button>

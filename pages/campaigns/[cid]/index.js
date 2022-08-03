@@ -148,7 +148,7 @@ const CampaignDetails = (props) => {
  * @param context
  * @returns {Promise<{contractBalance, requestCount, managerAddress, contributorCount, description, minimumContribution}>}
  */
-CampaignDetails.getInitialProps = async (context) => {
+CampaignDetails.getStaticProps = async (context) => {
   const campaign = getCampaignInstance(context.query.cid);
   const summary = await campaign.methods.getSummary().call();
 

@@ -163,7 +163,7 @@ const RequestsList = (props) => {
  * @param context
  * @returns {Promise<{requestCount: int, contributorCount: int, requests: Request[]}>}
  */
-RequestsList.getInitialProps = async (context) => {
+RequestsList.getStaticProps = async (context) => {
   const campaign = getCampaignInstance(context.query.cid);
   const requestCount = await campaign.methods.numRequests().call();
   const contributorCount = await campaign.methods.contributorCount().call();

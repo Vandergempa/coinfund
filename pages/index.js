@@ -101,7 +101,7 @@ const CampaignIndex = (props) => {
  * Fetches a list of deployed campaigns and their description from the blockchain on the server before render
  * @returns {Promise<{campaignDescriptions: string[], campaigns: string[]}>}
  */
-CampaignIndex.getInitialProps = async () => {
+CampaignIndex.getStaticProps = async () => {
   const campaigns = await getFactoryInstance()
     .methods.getDeployedCampaigns()
     .call();
