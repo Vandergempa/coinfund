@@ -17,31 +17,31 @@ const Login = () => {
     <div className="min-h-screen flex p-10">
       <div className="flex-1 flex flex-col justify-center mb-36 py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
-          {isProvider && (
-            <>
-              <div className="flex flex-row items-center">
-                <img
-                  className="h-12 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                  alt="app-logo"
-                />
-                <h2 className="ml-2 text-2xl font-extrabold text-indigo-600">
-                  Coinfund
-                </h2>
-              </div>
+          <div className="flex flex-row items-center">
+            <img
+              className="h-12 w-auto"
+              src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+              alt="app-logo"
+            />
+            <h2 className="ml-2 text-2xl font-extrabold text-indigo-600">
+              Coinfund
+            </h2>
+          </div>
 
-              <div className="mt-4 mb-6">
-                <button
-                  type="button"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed"
-                  onClick={() => handleWalletConnect(setUserInfo, toast)}
-                  disabled={!isProvider}
-                >
-                  Connect Wallet
-                </button>
-              </div>
-            </>
-          )}
+          <div className="mt-4 mb-6">
+            <button
+              type="button"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed"
+              onClick={() =>
+                isProvider
+                  ? handleWalletConnect(setUserInfo, toast)
+                  : window.location.replace("https://metamask.io/")
+              }
+              disabled={!isProvider}
+            >
+              {isProvider ? "Connect Wallet" : "Install Metamask"}
+            </button>
+          </div>
           <WalletAlert
             title={
               isProvider ? "Connect wallet first!" : "Install Metamask first!"

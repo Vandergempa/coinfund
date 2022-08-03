@@ -59,17 +59,19 @@ const MyApp = ({ Component, pageProps }) => {
       provider.removeListener("chainChanged", handleChainChange),
       provider.removeListener("accountsChanged", handleAccountsChange),
     ];
-  }, [provider]);
+  }, []);
 
   const Layout = Component.layout ?? MainLayout;
 
   return (
-    <Web3Context.Provider value={[userInfo, setUserInfo, network, isProvider]}>
-      <Head>
-        <title>Coinfund</title>
-      </Head>
-      <Layout>
-        <ErrorBoundary FallbackComponent={<p>Something went wrong!</p>}>
+    <ErrorBoundary FallbackComponent={<p>Something went wrong!</p>}>
+      <Web3Context.Provider
+        value={[userInfo, setUserInfo, network, isProvider]}
+      >
+        <Head>
+          <title>Coinfund</title>
+        </Head>
+        <Layout>
           {network === "rinkeby" && userInfo && userInfo.account ? (
             <Component {...pageProps} />
           ) : (
@@ -77,10 +79,10 @@ const MyApp = ({ Component, pageProps }) => {
               <LogIn isProvider={isProvider} />
             </>
           )}
-        </ErrorBoundary>
-      </Layout>
-      <Toaster position="bottom-right" />
-    </Web3Context.Provider>
+        </Layout>
+        <Toaster position="bottom-right" />
+      </Web3Context.Provider>
+    </ErrorBoundary>
   );
 };
 
