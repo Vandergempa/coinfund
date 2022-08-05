@@ -1,9 +1,9 @@
 import Head from "next/head";
 import "/resources/styles/globals.css";
-import { Toaster, toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import MainLayout from "../components/Layout";
 import { createContext, useEffect, useState } from "react";
-import { web3, provider, saveWalletInfo } from "../utils/web3";
+import { provider, saveWalletInfo, web3 } from "../utils/web3";
 import ErrorBoundary from "../components/ErrorBoundary";
 import LogIn from "/components/Templates/SignIn";
 
@@ -15,6 +15,7 @@ const MyApp = ({ Component, pageProps }) => {
   const [network, setNetwork] = useState("");
 
   /**
+   *
    * Checks if the selected network in Metamask is the Rinkeby test network and
    * prompts to change it if not
    * @returns {Promise<void>}

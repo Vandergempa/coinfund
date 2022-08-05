@@ -72,7 +72,7 @@ const RequestNew = () => {
               htmlFor="recipient-address"
               className="block text-sm font-medium text-gray-700"
             >
-              Recipient's address
+              {`Recipient's address`}
             </label>
             <div className="mt-1">
               <input

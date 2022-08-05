@@ -3,10 +3,12 @@ import { Disclosure } from "@headlessui/react";
 import Image from "next/image";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import Metamask from "/resources/icons/metamask.svg";
+import Coin from "/resources/icons/coin.svg";
 import Mosaic from "/resources/images/mosaic.jpg";
 import BreadCrumb from "./BreadCrumb";
 import { Web3Context } from "../pages/_app";
 import { toast } from "react-hot-toast";
+
 import classNames from "classnames";
 import { handleWalletConnect } from "../utils/web3";
 
@@ -93,13 +95,14 @@ const Header = () => {
                   <div className="relative h-16 flex items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
                     <div className="px-2 flex items-center lg:px-0">
                       <div className="flex flex-shrink-0 flex-row">
-                        <img
-                          className="block h-8 w-8"
-                          src="https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg"
-                          alt="Workflow"
+                        <Image
+                          src={Coin}
+                          alt="brand-logo"
+                          height={30}
+                          width={30}
                         />
-                        <h1 className="text-xl font-bold text-indigo-300 ml-2">
-                          coinfund
+                        <h1 className="text-2xl font-bold text-white ml-1 mb-1">
+                          coin<span className="font-thin">fund</span>
                         </h1>
                       </div>
                     </div>

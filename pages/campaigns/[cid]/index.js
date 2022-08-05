@@ -109,7 +109,7 @@ const CampaignDetails = (props) => {
             Campaign Details
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            See stats about your campaign's performance
+            {`See stats about your campaign's performance`}
           </p>
         </div>
         <PrimaryButton

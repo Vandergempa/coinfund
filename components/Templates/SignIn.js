@@ -1,9 +1,11 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import WalletAlert from "../WalletAlert";
 import { handleWalletConnect } from "../../utils/web3";
 import { toast } from "react-hot-toast";
-import { Web3Context } from "../../pages/_app";
 
+import Image from "next/image";
+import Coin from "/resources/icons/coin-filled.svg";
+import { Web3Context } from "../../pages/_app";
 /**
  * Login component that is shown when Metamask is not connected to the test network and there is no
  * account information in the context
@@ -17,15 +19,11 @@ const Login = () => {
     <div className="min-h-screen flex p-10">
       <div className="flex-1 flex flex-col justify-center mb-36 py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
-          <div className="flex flex-row items-center">
-            <img
-              className="h-12 w-auto"
-              src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-              alt="app-logo"
-            />
-            <h2 className="ml-2 text-2xl font-extrabold text-indigo-600">
-              Coinfund
-            </h2>
+          <div className="flex flex-col items-start mb-10">
+            <Image src={Coin} alt="brand-logo" height={150} width={150} />
+            <h1 className="text-6xl font-bold text-indigo-700 ml-1 mb-1">
+              coin<span className="font-thin">fund</span>
+            </h1>
           </div>
 
           <div className="mt-4 mb-6">
